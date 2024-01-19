@@ -44,7 +44,7 @@ class _ConfiguracoesScreenState extends State<ConfiguracoesScreen> {
             _buildTextField(_hostController, 'Host', 'localhost'),
             _buildTextField(_portController, 'Porta', '3306'),
             _buildTextField(_userController, 'Usuário', 'root'),
-            _buildTextField(_passController, 'Senha', 'passwor', isPassword: true),
+            _buildTextField(_passController, 'Senha', 'password', isPassword: true),
             _buildTextField(_nameController, 'Nome do Banco de Dados', 'db_name'),
             const SizedBox(height: 16.0),
             ElevatedButton(
