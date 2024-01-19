@@ -1,1 +1,0 @@
- C:\\Users\\desenvolvedor\\Documents\\Eliezer\\Flutter\\Dev\\dev_xmls_contabilidade\\.dart_tool\\flutter_build\\f7ecb60e119f6c695be21b0b032bd6ea\\native_assets.yaml: 
