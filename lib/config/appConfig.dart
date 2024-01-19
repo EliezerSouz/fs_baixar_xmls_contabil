@@ -32,11 +32,11 @@ class AppConfig {
   }
 
   static String getDbPass() {
-    return _prefs.getString(dbPassKey) ?? 'farsoft01';
+    return _prefs.getString(dbPassKey) ?? 'password';
   }
 
   static String getDbName() {
-    return _prefs.getString(dbNameKey) ?? 'farsoft_reyautopecas';
+    return _prefs.getString(dbNameKey) ?? 'db_name';
   }
 
   static Future<void> setDbConfig(String host, String port, String user, String pass, String name) async {
