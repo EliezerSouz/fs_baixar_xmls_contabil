@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'config/appConfig.dart';
 import 'config/configuracoes_screen.dart';
+import 'package:intl/intl.dart';
 
 String caminhoProjetoFlutter = Directory.current.path;
 String executavelGo = 'go.exe';
