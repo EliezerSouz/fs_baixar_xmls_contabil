@@ -358,7 +358,7 @@ Future<void> _iniciarAPI(String dataInicial, String dataFinal, String emissaoP,
     apiProcess!.stdout.transform(utf8.decoder).listen((data) {
       print('API Output: $data');
       // Exibir mensagem na tela usando SnackBar
-      if (data.contains("Inciando")) {
+      if (data.contains("referência")) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('$data'),
@@ -370,7 +370,7 @@ Future<void> _iniciarAPI(String dataInicial, String dataFinal, String emissaoP,
     apiProcess!.stderr.transform(utf8.decoder).listen((data) {
       print('API Error: $data');
       // Exibir mensagem na tela usando SnackBar
-      if(data.contains("Conectando") || data.contains("Iniciando"))
+      if(data.contains("Conectando") || data.contains("Iniciando") || data.contains("referência"))
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('$data'),
