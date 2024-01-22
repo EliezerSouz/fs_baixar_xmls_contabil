@@ -104,6 +104,13 @@ class _MyHomePageState extends State<MyHomePage> {
         shrinkWrap: true,
         padding: const EdgeInsets.all(16.0),
         children: [
+          Text(
+            'Período',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16.0,
+            ),
+          ),
           Container(
             padding: const EdgeInsets.all(8.0),
             decoration: BoxDecoration(
@@ -139,7 +146,13 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
           ),
-          SizedBox(height: 16.0),
+          SizedBox(height: 16.0),Text(
+          'Tipo de emissão',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 16.0,
+          ),
+        ),
           Container(
             padding: const EdgeInsets.all(8.0),
             decoration: BoxDecoration(
@@ -163,6 +176,13 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           SizedBox(height: 16.0),
+          Text(
+            'Modelo Nota',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16.0,
+            ),
+          ),
           Container(
             padding: const EdgeInsets.all(8.0),
             decoration: BoxDecoration(
