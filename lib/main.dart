@@ -362,6 +362,7 @@ Future<void> _iniciarAPI(String dataInicial, String dataFinal, String emissaoP,
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text('$data'),
+            duration: Duration(milliseconds: 1),
           ),
         );
       }
@@ -374,7 +375,8 @@ Future<void> _iniciarAPI(String dataInicial, String dataFinal, String emissaoP,
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('$data'),
-          backgroundColor: Colors.blueGrey, // Opcional: definir a cor de fundo
+          backgroundColor: Colors.blueGrey,
+          duration: Duration(milliseconds: 10),
         ),
       );
     });
