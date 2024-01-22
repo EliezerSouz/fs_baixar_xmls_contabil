@@ -4,19 +4,6 @@
 
 #include "flutter_window.h"
 #include "utils.h"
-// Defina as dimensões desejadas da janela
-const int width = 800;
-const int height = 600;
-
-// Use as dimensões acima ao criar a janela
-const auto window = windowManager->CreateNewWindow(
-    hInstance,
-    title,
-    WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX,
-    width,
-    height
-
-);
 
 int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
                       _In_ wchar_t *command_line, _In_ int show_command) {
@@ -38,8 +25,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
   project.set_dart_entrypoint_arguments(std::move(command_line_arguments));
 
   FlutterWindow window(project);
-  Win32Window::Point origin(10, 10);
-  Win32Window::Size size(1280, 720);
+  Win32Window::Point origin(450, 150);
+  Win32Window::Size size(900, 720);
   if (!window.Create(L"dev_xmls_contabilidade", origin, size)) {
     return EXIT_FAILURE;
   }
@@ -54,4 +41,3 @@ int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
   ::CoUninitialize();
   return EXIT_SUCCESS;
 }
-
