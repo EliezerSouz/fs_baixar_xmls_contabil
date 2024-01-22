@@ -1,3 +1,4 @@
+# .gitignore
+.env
 /build/
 /fs-xmls/
-.env
