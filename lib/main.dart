@@ -90,7 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         actions: [
           IconButton(
-            icon: Icon(Icons.settings),
+            icon: const Icon(Icons.settings),
             onPressed: () {
               Navigator.push(
                 context,
@@ -104,7 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
         shrinkWrap: true,
         padding: const EdgeInsets.all(16.0),
         children: [
-          Text(
+          const Text(
             'Período',
             style: TextStyle(
               fontWeight: FontWeight.bold,
@@ -126,19 +126,21 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: IgnorePointer(
                       child: TextField(
                         controller: dataInicialController,
-                        decoration: InputDecoration(labelText: 'Data Inicial'),
+                        decoration:
+                            const InputDecoration(labelText: 'Data Inicial'),
                       ),
                     ),
                   ),
                 ),
-                SizedBox(width: 16.0),
+                const SizedBox(width: 16.0),
                 Expanded(
                   child: InkWell(
                     onTap: () => _selecionarDataFinal(context),
                     child: IgnorePointer(
                       child: TextField(
                         controller: dataFinalController,
-                        decoration: InputDecoration(labelText: 'Data Final'),
+                        decoration:
+                            const InputDecoration(labelText: 'Data Final'),
                       ),
                     ),
                   ),
@@ -146,13 +148,14 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
           ),
-          SizedBox(height: 16.0),Text(
-          'Tipo de emissão',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 16.0,
+          const SizedBox(height: 16.0),
+          const Text(
+            'Tipo de emissão',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16.0,
+            ),
           ),
-        ),
           Container(
             padding: const EdgeInsets.all(8.0),
             decoration: BoxDecoration(
@@ -175,8 +178,8 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
           ),
-          SizedBox(height: 16.0),
-          Text(
+          const SizedBox(height: 16.0),
+          const Text(
             'Modelo Nota',
             style: TextStyle(
               fontWeight: FontWeight.bold,
@@ -228,7 +231,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 emissaoT = 'T';
               }
               await _iniciarAPI(dataInicialController.text,
-                  dataFinalController.text, emissaoP, emissaoT);
+                  dataFinalController.text, emissaoP, emissaoT, context);
               // ignore: use_build_context_synchronously
               await _baixarXmlsHandler(context, dataInicialController.text,
                   dataFinalController.text, emissaoP, emissaoT, _nfe, _nfce);
@@ -326,35 +329,62 @@ Future<String> _baixarCodigoGoDoGitHub() async {
   }
 }
 
-// Iniciar API
 Future<void> _iniciarAPI(String dataInicial, String dataFinal, String emissaoP,
-    String emissaoT) async {
+    String emissaoT, BuildContext context) async {
   String caminhoArquivoGo = await _baixarCodigoGoDoGitHub();
-  // Execute o comando
-  apiProcess = await Process.start(
-    executavelGo,
-    [
-      'run',
-      '-mod=readonly',
-      caminhoArquivoGo,
-      dataInicial,
-      dataFinal,
-      emissaoP,
-      emissaoT
-    ],
-  );
 
-  // Adicione um pequeno atraso para dar tempo à API para começar a ouvir
-  await Future.delayed(Duration(seconds: 1));
+  try {
+    // Execute o comando
+    apiProcess = await Process.start(
+      executavelGo,
+      [
+        'run',
+        '-mod=readonly',
+        caminhoArquivoGo,
+        dataInicial,
+        dataFinal,
+        emissaoP,
+        emissaoT
+      ],
+    );
 
-  // Adicione um listener para imprimir a saída da API
-  apiProcess!.stdout.transform(utf8.decoder).listen((data) {
-    print('API Output: $data');
-  });
+    // Adicione um pequeno atraso para dar tempo à API para começar a ouvir
+    await Future.delayed(Duration(seconds: 1));
 
-  apiProcess!.stderr.transform(utf8.decoder).listen((data) {
-    print('API Error: $data');
-  });
+    // Adicione um listener para imprimir a saída da API
+    apiProcess!.stdout.transform(utf8.decoder).listen((data) {
+      print('API Output: $data');
+      // Exibir mensagem na tela usando SnackBar
+      if (data.contains("Inciando")) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('$data'),
+          ),
+        );
+      }
+    });
+
+    apiProcess!.stderr.transform(utf8.decoder).listen((data) {
+      print('API Error: $data');
+      // Exibir mensagem na tela usando SnackBar
+      if(data.contains("Conectando") || data.contains("Iniciando"))
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('$data'),
+          backgroundColor: Colors.blueGrey, // Opcional: definir a cor de fundo
+        ),
+      );
+    });
+  } catch (e) {
+    print('Erro ao iniciar a API: $e');
+    // Exibir mensagem na tela usando SnackBar
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Erro ao iniciar a API: $e'),
+        backgroundColor: Colors.blueGrey, // Opcional: definir a cor de fundo
+      ),
+    );
+  }
 }
 
 // Adicione esta classe ou função no arquivo config.dart
