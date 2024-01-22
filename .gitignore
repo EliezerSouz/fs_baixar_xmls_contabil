@@ -2,3 +2,4 @@
 .env
 /build/
 /fs-xmls/
+.flutter-plugins
