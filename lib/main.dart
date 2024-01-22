@@ -5,6 +5,8 @@ import 'package:http/http.dart' as http;
 import 'config/appConfig.dart';
 import 'config/configuracoes_screen.dart';
 import 'package:intl/intl.dart';
+import 'dart:ffi' as ffi;
+import 'package:win32/win32.dart';
 
 String caminhoProjetoFlutter = Directory.current.path;
 String executavelGo = 'go.exe';
@@ -27,6 +29,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      title: "Baixar Xmls",
       home: MyHomePage(),
     );
   }

@@ -4,6 +4,19 @@
 
 #include "flutter_window.h"
 #include "utils.h"
+// Defina as dimensões desejadas da janela
+const int width = 800;
+const int height = 600;
+
+// Use as dimensões acima ao criar a janela
+const auto window = windowManager->CreateNewWindow(
+    hInstance,
+    title,
+    WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX,
+    width,
+    height
+
+);
 
 int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
                       _In_ wchar_t *command_line, _In_ int show_command) {
@@ -41,3 +54,4 @@ int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
   ::CoUninitialize();
   return EXIT_SUCCESS;
 }
+
