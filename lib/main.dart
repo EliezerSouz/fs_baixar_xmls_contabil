@@ -5,16 +5,14 @@ import 'package:http/http.dart' as http;
 import 'config/appConfig.dart';
 import 'config/configuracoes_screen.dart';
 import 'package:intl/intl.dart';
-import 'dart:ffi' as ffi;
-import 'package:win32/win32.dart';
 
 String caminhoProjetoFlutter = Directory.current.path;
 String executavelGo = 'go.exe';
 Process? apiProcess;
 void main() async {
-  Directory.current = Directory('$caminhoProjetoFlutter');
+  Directory.current = Directory(caminhoProjetoFlutter);
   await AppConfig.initialize();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 @override
@@ -25,18 +23,22 @@ void dispose() {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: "Baixar Xmls",
       home: MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _MyHomePageState createState() => _MyHomePageState();
 }
 
@@ -211,7 +213,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
           ),
-          SizedBox(height: 16.0),
+          const SizedBox(height: 16.0),
           ElevatedButton(
             onPressed: () async {
               setState(() {
@@ -219,13 +221,13 @@ class _MyHomePageState extends State<MyHomePage> {
               });
               var emissaoP = '';
               var emissaoT = '';
-              var _nfe = '';
-              var _nfce = '';
+              var nfe = '';
+              var nfce = '';
               if (nfeSelecionado) {
-                _nfe = '55';
+                nfe = '55';
               }
               if (nfceSelecionado) {
-                _nfce = '65';
+                nfce = '65';
               }
               if (propriaSelecionado) {
                 emissaoP = 'P';
@@ -237,7 +239,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   dataFinalController.text, emissaoP, emissaoT, context);
               // ignore: use_build_context_synchronously
               await _baixarXmlsHandler(context, dataInicialController.text,
-                  dataFinalController.text, emissaoP, emissaoT, _nfe, _nfce);
+                  dataFinalController.text, emissaoP, emissaoT, nfe, nfce);
 
               setState(() {
                 carregando = false;
@@ -245,8 +247,8 @@ class _MyHomePageState extends State<MyHomePage> {
             },
             child: const Text('Baixar XMLs'),
           ),
-          SizedBox(height: 35.0),
-          if (carregando) CircularProgressIndicator(),
+          const SizedBox(height: 35.0),
+          if (carregando) const CircularProgressIndicator(),
         ],
       ),
     );
@@ -268,15 +270,16 @@ Future<void> _baixarXmlsHandler(
     String dataFinal,
     String emissorP,
     String emissorT,
-    String _nfe,
-    String _nfce) async {
+    String nfe,
+    String nfce) async {
   await AppConfig.initialize(); // Adicione esta linha
   final response = await http.get(Uri.parse(
-      'http://localhost:8080/api/baixar-xmls?dataInicial=$dataInicial&dataFinal=$dataFinal&emissorP=$emissorP&emissorT=$emissorT&_nfe=$_nfe&_nfce=$_nfce'));
+      'http://localhost:8080/api/baixar-xmls?dataInicial=$dataInicial&dataFinal=$dataFinal&emissorP=$emissorP&emissorT=$emissorT&_nfe=$nfe&_nfce=$nfce'));
 
   if (response.statusCode == 200) {
+    // ignore: use_build_context_synchronously
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
+      const SnackBar(
         content: Text('XMLs baixados com sucesso'),
       ),
     );
@@ -285,10 +288,8 @@ Future<void> _baixarXmlsHandler(
 
     // Imprima detalhes adicionais da resposta em caso de falha
     print('Falha ao baixar XMLs. Código de status: ${response.statusCode}');
-    if (response.body.isNotEmpty) {
-      print('Corpo da resposta: ${response.body}');
-    }
 
+    // ignore: use_build_context_synchronously
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
@@ -311,18 +312,18 @@ Future<String> _baixarCodigoGoDoGitHub() async {
       'https://raw.githubusercontent.com/EliezerSouz/conexao_mysql/main/go.sum'));
 
   if (responseMod.statusCode == 200) {
-    final caminhoLocal = 'go.mod';
+    const caminhoLocal = 'go.mod';
     await File(caminhoLocal).writeAsString(responseMod.body);
     //return caminhoLocal;
   }
   if (responseSum.statusCode == 200) {
-    final caminhoLocal = 'go.sum';
+    const caminhoLocal = 'go.sum';
     await File(caminhoLocal).writeAsString(responseSum.body);
     //return caminhoLocal;
   }
 
   if (response.statusCode == 200) {
-    final caminhoLocal = 'main.go';
+    const caminhoLocal = 'main.go';
     await File(caminhoLocal).writeAsString(response.body);
     return caminhoLocal;
   } else {
@@ -352,7 +353,7 @@ Future<void> _iniciarAPI(String dataInicial, String dataFinal, String emissaoP,
     );
 
     // Adicione um pequeno atraso para dar tempo à API para começar a ouvir
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(const Duration(seconds: 1));
 
     // Adicione um listener para imprimir a saída da API
     apiProcess!.stdout.transform(utf8.decoder).listen((data) {
@@ -361,8 +362,8 @@ Future<void> _iniciarAPI(String dataInicial, String dataFinal, String emissaoP,
       if (data.contains("referência")) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('$data'),
-            duration: Duration(milliseconds:0),
+            content: Text(data),
+            duration: const Duration(milliseconds:0),
           ),
         );
       }
@@ -371,18 +372,20 @@ Future<void> _iniciarAPI(String dataInicial, String dataFinal, String emissaoP,
     apiProcess!.stderr.transform(utf8.decoder).listen((data) {
       print('API Error: $data');
       // Exibir mensagem na tela usando SnackBar
-      if(data.contains("Conectando") || data.contains("Iniciando") || data.contains("referência"))
-      ScaffoldMessenger.of(context).showSnackBar(
+      if(data.contains("Conectando") || data.contains("Iniciando") || data.contains("referência")) {
+        ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('$data'),
           backgroundColor: Colors.blueGrey,
-          duration: Duration(milliseconds: 1000),
+          duration: const Duration(milliseconds: 1000),
         ),
       );
+      }
     });
   } catch (e) {
     print('Erro ao iniciar a API: $e');
     // Exibir mensagem na tela usando SnackBar
+    // ignore: use_build_context_synchronously
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('Erro ao iniciar a API: $e'),
